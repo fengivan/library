@@ -2,36 +2,72 @@
     <head>
         <meta charset = "utf-8">
         <title> Notepad</title>
-        <link rel = "stylesheet" href="style.css">
+        
 
         <style>
             body{
                 background-color:rgb(44, 59, 143);
-                display:grid;
-            }
-
-
-            .notes
-            {
-                background-color:rgb(44, 59, 143);
-                display:flex;
-                justify-content:space-evenly;
-                flex-wrap:wrap;
-               
-            }
-            .item
-            {
-                margin-top:10px;
-                height:300px;
-                width:300px;
-                border-style:solid;
-                border-width:2px;
-                background-color:white;
-                border-radius:10px;
                 
             }
-            .add
+            #overlay
             {
+                position:fixed;
+                display:none;
+                width:50%;
+                height:50%;
+                top:25%;
+                left:25%;
+                background-color: rgba(0,0,0,0.8);
+                z-index:2;
+                cursor:pointer;
+                grid-template-columns: repeat(8, 1fr);
+                grid-template-rows: repeat(8,1fr);
+                
+            }
+            .title
+            {
+                grid-column:4/6;
+                grid-row:1/2;
+            }
+            .text
+            {
+                grid-column:2/8;
+                grid-row:3/7;
+            }
+            .cancelbtn
+            {
+                grid-column:2/3;
+                grid-row:7/8;
+                width:100px;
+                height:50px;
+                background-color:red;
+                margin-top:15%;
+                border-radius:5px;
+                text-align:center;
+                line-height:50px;
+               
+            }
+            .cancelbtn:hover{
+                background-color:lightcoral;
+            }
+            .donebtn
+            {
+                grid-column:7/8;
+                grid-row:7/8;
+                width:100px;
+                height:50px;
+                background-color:green;
+                margin-top:15%;
+                border-radius:5px;
+                text-align:center;
+                line-height:50px;
+            }
+            .donebtn:hover{
+                background-color:lightgreen;
+            }
+            .addbtn
+            {
+                
                 width:200px;
                 height:100px;
                 border-radius:25px;
@@ -42,72 +78,53 @@
                 margin:auto;
                 margin-bottom:1em;
             }
-            .add:hover{
+            .addbtn:hover{
                 background-color:lightgray;
             }
-            .addscreen
+          
+
+            .notes
             {
-                width:500px;
-                height:500px;
-                margin:auto;
-                margin-top:10em;
-                border-radius:25px;
-                background-color: beige;
+                background-color:rgb(44, 59, 143);
                 display:flex;
-                
-                align-items:flex-end;
-                justify-content: space-evenly;
-
+                justify-content:space-evenly;
+                flex-wrap:wrap;
             }
-            .addwrapper
+            .item
             {
-                width:100%;
-                height:100%;
-                position:absolute;
-                font-size:1.5em;
-                display: flex;
-                text-align:center;
-                line-height:2em;
-                z-index: -1;
+                margin-top:10px;
+                height:300px;
+                width:300px;
+                border-style:solid;
+                border-width:2px;
+                background-color:white;
+                border-radius:10px;
             }
-            .done
-            {
-                width:100px;
-                height:50px;
-                background-color:green;
-                margin-bottom:5%;
-                border-radius:5px;
-                
-
-            }
-            .cancel
-            {
-                width:100px;
-                height:50px;
-                background-color:red;
-                margin-bottom:5%;
-                border-radius:5px;
-                
-                
-            }
+           
+       
+           
+            
+           
 
 
         </style>
     </head>
 
     <body class = "w">
-        
-        <div class = "add"> Add Note</div>
-        <div class = "addwrapper"></div>
+        <div id= "overlay">
+            
+        </div>
+        <div class = "addbtn"> Add Note</div>
         <div class= "notes">  </div>
     </body>
     <script> 
     let mynotepad=[];
     let notes=document.querySelector(".notes");
-    let addbtn=document.querySelector(".add");
+    let addbtn=document.querySelector(".addbtn");
     let addwrap=document.querySelector(".addwrapper");
-    addbtn.addEventListener("mousedown", addNewNote);
-    console.log(mynotepad.length);
+    addbtn.addEventListener("mousedown", overlayOn);
+    console.log(addbtn);
+    console.log("running");
     display();
 
     function Note(title, info, time)
@@ -130,41 +147,55 @@
     }
 
 
-    function addNewNote()
+    function overlayOn()
     {
-        let n = document.createElement("div");
-        n.className="addscreen";
-        addwrap.appendChild(n);
-
- 
-        let cancel = document.createElement("div");
-        cancel.className="cancel";
-        cancel.innerHTML="Cancel";
-        n.appendChild(cancel);
-
-        let done = document.createElement("div");
-        done.className="done";
-        done.innerHTML="Done";
-        n.appendChild(done);
-
+        document.getElementById("overlay").style.display="grid";
+        let n = document.getElementById("overlay");
         let title=document.createElement("input");
         title.setAttribute("type", "text");
         title.className="title";
         title.value="Title";
         n.appendChild(title);
-
-
+        let text = document.createElement("textarea");
+        text.setAttribute("type","text");
+        text.className="text";
+        text.value="enter text here";
+        n.appendChild(text);
+        let cancel = document.createElement("div");
+        cancel.className="cancelbtn";
+        cancel.innerHTML="Cancel";
+        n.appendChild(cancel);
+        let done = document.createElement("div");
+        done.className="donebtn";
+        done.innerHTML="Done";
+        n.appendChild(done);
        
+        cancel.addEventListener("mousedown", abort)
+        done.addEventListener("mousedown", addNewNote)
 
-
-        const note1=new Note("notey note", "very important", 500);
-        //const note2=new Note("good title", "nonsense", 100);
-        //mynotepad.push(note1);
-       // mynotepad.push(note2);
         display();
-
     }
+    function abort()
+    {
+        let n = document.getElementById("overlay");
+        n.innerHTML="";
+        overlayOff();
+    }
+    function overlayOff()
+    {
+        document.getElementById("overlay").style.display="none";
+    }
+
+
+    function addNewNote()
+    {
         
+        const note1=new Note("notey note", "very important", 500);
+        mynotepad.push(note1);
+        abort();
+        display();
+    }
+
         
     
     
