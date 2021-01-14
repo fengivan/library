@@ -86,7 +86,6 @@
             
             #addbtn
             {
-                
                 width:200px;
                 height:50px;
                 border-radius:25px;
@@ -114,7 +113,6 @@
             .item
             {
                 display:grid;
-
                 grid-template-columns: repeat(4, 1fr);
                 grid-template-rows: repeat(6,1fr);
                 margin-top:10px;
@@ -125,33 +123,26 @@
                 background-color:white;
                 border-radius:10px;
             }
-
            .title
            {
-
                 grid-column:1/5;
                 grid-row:1/2;
-               text-align:center;
-               font-size:1.5em;
-               border-bottom:2px solid;
-               margin-left:10px;
-               margin-right:10px;
+                text-align:center;
+                font-size:1.5em;
+                border-bottom:2px solid;
+                margin-left:10px;
+                margin-right:10px;
            }
            .body
            {
-
                 grid-column:1/5;
                 grid-row:2/6;
-               margin:10px;
-               border-style:solid;
+                margin:10px;
+                border-style:solid;
                
            }
-           
-
-            
            .delete
             {
-                
                 grid-column:1/2;
                 grid-row:6/7;
                 width:40px;
@@ -161,12 +152,12 @@
                 text-align:center;
                 line-height:25px;
                 justify-self:center;
-               align-items:end;
+                align-items:end;
             }
-            .delete:hover{
+            .delete:hover
+            {
                 background-color:red;
             }
-
             .edit
             {
                 grid-column:4/5;
@@ -184,13 +175,6 @@
             {
                 background-color:yellowgreen;
             }
-           
-       
-           
-            
-           
-
-
         </style>
     </head>
 
@@ -202,31 +186,25 @@
         </div>
         <div id= "notes">  </div>
     </body>
+
     <script> 
     let mynotepad=[];
     let notes=document.getElementById("notes");
     let addbtn=document.getElementById("addbtn");
     let deleteAllBtn=document.getElementById("deleteAll");
     deleteAllBtn.addEventListener("mousedown", deleteAll)
-    
     addbtn.addEventListener("mousedown", overlayOn);
     addbtn.index=-1;
 
-    console.log(localStorage.length);
     init();
     display();
-    //localStorage.clear();
     function init()
     {
         for(let i =0; i<localStorage.length; i++)
         {
-            console.log(localStorage.key(i));
-            let n=new Note("","", 0);
+            let n=new Note(localStorage.key(i),localStorage.getItem(localStorage.key(i)));
             mynotepad.push(n);
-            mynotepad[i].title=localStorage.key(i);
-
-            mynotepad[i].info=localStorage.getItem(mynotepad[i]);
-    }
+        }
     }
 
     function deleteAll()
@@ -235,11 +213,10 @@
         localStorage.clear();
         display();
     }
-    function Note(title, info, time)
+    function Note(title, info)
     {
         this.title=title;
         this.info=info;
-        this.time=time;
     }
     function display()
     {
@@ -248,36 +225,37 @@
         {
             let element=document.createElement("div");
             element.className="item";
+
             let title=document.createElement("div");
             title.className="title";
             title.innerHTML=mynotepad[i].title;
             element.appendChild(title);
+            
             let body=document.createElement("div");
             body.className="body";
-            element.appendChild(body);
             body.innerHTML=mynotepad[i].info;
-            notes.appendChild(element);
+            element.appendChild(body);
+            
             let del=document.createElement("div");
             del.className="delete";
             del.innerHTML="X";
             del.addEventListener("mousedown",deleteItem);
             del.index=i;
             element.appendChild(del);
+
             let edit=document.createElement("div");
             edit.className="edit";
             edit.innerHTML="Edit";
             edit.addEventListener("mousedown",overlayOn);
             edit.index=i;
             element.appendChild(edit);
-            
+
+            notes.appendChild(element);
         }
         localStorage.clear();
+
         for(let i =0; i<mynotepad.length; i++)
-        {
             localStorage.setItem(mynotepad[i].title, mynotepad[i].info);
-        }
-
-
     }
 
     function deleteItem(event)
@@ -286,8 +264,6 @@
         display();
     }
     
-
-
     function overlayOn(event)
     {
         document.getElementById("overlay").style.display="grid";
@@ -295,63 +271,57 @@
         let title=document.createElement("input");
         title.setAttribute("type", "text");
         title.id="title";
+
         if(event.currentTarget.index==-1)
             title.placeholder="Enter Note Title Here";
         else
             title.value=mynotepad[event.currentTarget.index].title;
         n.appendChild(title);
+        
         let text = document.createElement("textarea");
         text.setAttribute("type","text");
         text.id="text";
+        
         if(event.currentTarget.index==-1)
             text.placeholder="Enter Note Contents Here";
         else
             text.value=mynotepad[event.currentTarget.index].info;
         n.appendChild(text);
+        
         let cancel = document.createElement("div");
         cancel.id="cancelbtn";
         cancel.innerHTML="Cancel";
         n.appendChild(cancel);
+        cancel.addEventListener("mousedown", overlayOff);
+
         let done = document.createElement("div");
         done.id="donebtn";
         done.innerHTML="Done";
         n.appendChild(done);
-        cancel.addEventListener("mousedown", abort)
         done.index=event.currentTarget.index;
-            done.addEventListener("mousedown", addNote)
-
-
+        done.addEventListener("mousedown", addNote);
         display();
     }
     
-    function abort()
+    function overlayOff()
     {
         let n = document.getElementById("overlay");
         n.innerHTML="";
-        overlayOff();
+        n.style.display="none";
     }
-    function overlayOff()
-    {
-        document.getElementById("overlay").style.display="none";
-    }
-
 
     function addNote()
     {
-        
-        let title=document.getElementById("title").value;
-        
+        let title=document.getElementById("title").value;   
         let body=document.getElementById("text").value;
         if(event.currentTarget.index==-1)
-        {const note1=new Note(title, body, 500);
-        mynotepad.push(note1);
-        }
+            mynotepad.push(new Note(title, body));
         else
         {
             mynotepad[event.currentTarget.index].title=title;
             mynotepad[event.currentTarget.index].info=body;
         }
-        abort();
+        overlayOff();
         display();
     }
 
