@@ -3,11 +3,10 @@
         <meta charset = "utf-8">
         <title> Notepad</title>
         
-
         <style>
-            body{
-                background-color:rgb(44, 59, 143);
-                
+            body
+            {
+                background-color:lightcyan;
             }
             #overlay
             {
@@ -22,7 +21,25 @@
                 cursor:pointer;
                 grid-template-columns: repeat(8, 1fr);
                 grid-template-rows: repeat(8,1fr);
-                
+            }
+            #deleteAll
+            {
+                width:200px;
+                height:50px;   
+                border-radius:25px;
+                background-color: gray;
+                text-align:center;
+                font-size:2em;
+                line-height:50px;
+                margin:auto;
+                margin-bottom:.5em;
+            }
+            #deleteAll:hover{
+                background-color:lightgray;
+            }
+            .selections
+            {
+                display:flex;
             }
             .title
             {
@@ -40,7 +57,7 @@
                 grid-row:7/8;
                 width:100px;
                 height:50px;
-                background-color:red;
+                background-color: #ff4230;
                 margin-top:15%;
                 border-radius:5px;
                 text-align:center;
@@ -48,7 +65,7 @@
                
             }
             .cancelbtn:hover{
-                background-color:lightcoral;
+                background-color:red;
             }
             .donebtn
             {
@@ -56,27 +73,29 @@
                 grid-row:7/8;
                 width:100px;
                 height:50px;
-                background-color:green;
+                background-color:#4CAF50;
                 margin-top:15%;
                 border-radius:5px;
                 text-align:center;
                 line-height:50px;
             }
-            .donebtn:hover{
-                background-color:lightgreen;
+            .donebtn:hover
+            {
+                background-color:#3e8e41;
             }
+            
             .addbtn
             {
                 
                 width:200px;
-                height:100px;
+                height:50px;
                 border-radius:25px;
                 background-color: gray;
                 text-align:center;
                 font-size:2em;
-                line-height:100px;
+                line-height:50px;
                 margin:auto;
-                margin-bottom:1em;
+                margin-bottom:.5em;
             }
             .addbtn:hover{
                 background-color:lightgray;
@@ -85,7 +104,9 @@
 
             .notes
             {
-                background-color:rgb(44, 59, 143);
+                border-top:5px solid;
+                margin-top:5px;
+                background-color:lightcyan;
                 display:flex;
                 justify-content:space-evenly;
                 flex-wrap:wrap;
@@ -111,22 +132,30 @@
     </head>
 
     <body class = "w">
-        <div id= "overlay">
-            
+        <div id= "overlay"></div>
+        <div id = "selections">  
+            <div class = "addbtn"> New Note</div>
+            <div id = "deleteAll"> Delete All</div>
         </div>
-        <div class = "addbtn"> Add Note</div>
         <div class= "notes">  </div>
     </body>
     <script> 
     let mynotepad=[];
     let notes=document.querySelector(".notes");
     let addbtn=document.querySelector(".addbtn");
+    let deleteAllBtn=document.getElementById("deleteAll");
+    deleteAllBtn.addEventListener("mousedown", deleteAll)
     let addwrap=document.querySelector(".addwrapper");
     addbtn.addEventListener("mousedown", overlayOn);
     console.log(addbtn);
     console.log("running");
     display();
 
+    function deleteAll()
+    {
+        mynotepad=[];
+        display();
+    }
     function Note(title, info, time)
     {
         this.title=title;
@@ -154,12 +183,12 @@
         let title=document.createElement("input");
         title.setAttribute("type", "text");
         title.className="title";
-        title.value="Title";
+        title.placeholder="Enter Note Title Here";
         n.appendChild(title);
         let text = document.createElement("textarea");
         text.setAttribute("type","text");
         text.className="text";
-        text.value="enter text here";
+        text.placeholder="Enter Note Contents Here";
         n.appendChild(text);
         let cancel = document.createElement("div");
         cancel.className="cancelbtn";
@@ -169,10 +198,8 @@
         done.className="donebtn";
         done.innerHTML="Done";
         n.appendChild(done);
-       
         cancel.addEventListener("mousedown", abort)
         done.addEventListener("mousedown", addNewNote)
-
         display();
     }
     function abort()
@@ -189,6 +216,8 @@
 
     function addNewNote()
     {
+
+
         
         const note1=new Note("notey note", "very important", 500);
         mynotepad.push(note1);
