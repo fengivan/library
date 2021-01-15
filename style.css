@@ -1,0 +1,173 @@
+body
+{
+    background-color:lightcyan;
+}
+#overlay        /* overlay for the add new note screen*/
+{
+    position:fixed;
+    display:none;
+    width:50%;
+    height:50%;
+    top:25%;
+    left:25%;
+    background-color: rgba(0,0,0,0.8);
+    z-index:2;
+    cursor:pointer;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8,1fr);
+    border-radius:25px;
+}
+#addbtn         /*add note button */
+{
+    width:200px;
+    height:50px;
+    border-radius:25px;
+    background-color: lightgray;
+    text-align:center;
+    font-size:2em;
+    line-height:50px;
+    margin:auto;
+    margin-bottom:.5em;
+}
+#addbtn:hover
+{
+    background-color:gray;
+}
+#deleteAll          /* delete all button*/
+{
+    width:200px;
+    height:50px;   
+    border-radius:25px;
+    background-color: lightgray;
+    text-align:center;
+    font-size:2em;
+    line-height:50px;
+    margin:auto;
+    margin-bottom:.5em;
+}
+#deleteAll:hover{
+    background-color:gray;
+}
+#selections         /* top bar with the buttons*/
+{
+    display:flex;
+}   
+#title              /* title of add screen */
+{
+    margin-top:20px;
+    grid-column:3/7;
+    grid-row:1/2;
+}
+#text               /*text box of add screen*/
+{
+    grid-column:2/8;
+    grid-row:3/7;
+}
+#cancelbtn          /*cancel btn of add screen*/
+{
+    grid-column:2/3;
+    grid-row:7/8;
+    width:100px;
+    height:50px;
+    background-color: #ff4230;
+    margin-top:15%;
+    border-radius:5px;
+    text-align:center;
+    line-height:50px;
+}
+#cancelbtn:hover
+{
+    background-color:red;
+}
+#donebtn        /*done btn of add screen*/
+{
+    grid-column:7/8;
+    grid-row:7/8;
+    width:100px;
+    height:50px;
+    background-color:#4CAF50;
+    margin-top:15%;
+    border-radius:5px;
+    text-align:center;
+    line-height:50px;
+}
+#donebtn:hover
+{
+    background-color:#3e8e41;
+}
+#notes                  /*notes section of the screen*/
+{
+    border-top:5px solid;
+    margin-top:5px;
+    background-color:lightcyan;
+    display:flex;
+    justify-content:space-evenly;
+    flex-wrap:wrap;
+}
+.item           /*every note is an item object*/
+{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(6,1fr);
+    margin-top:10px;
+    height:300px;
+    width:300px;
+    border-style:solid;
+    border-width:2px;
+    background-color:white;
+    border-radius:10px;
+}
+.title      /*every note has a title*/
+{
+    grid-column:1/5;
+    grid-row:1/2;
+    text-align:center;
+    font-size:1.5em;
+    border-bottom:2px solid;
+    margin-left:10px;
+    margin-right:10px;
+}
+.body   /*every note has a body*/
+{
+    grid-column:1/5;
+    grid-row:2/6;
+    margin:10px;
+    border-style:solid;
+    overflow:auto;
+}
+.delete     /*every note has a delete btn*/
+{
+    grid-column:1/2;
+    grid-row:6/7;
+    width:40px;
+    height:25px;
+    background-color:#ffcccb;
+    border-radius:5px;
+    margin-top:10px;
+    text-align:center;
+    line-height:25px;
+    justify-self:center;
+    align-items:end;
+}
+.delete:hover
+{
+    background-color:red;
+}
+.edit       /*every note has a edit btn*/
+{
+    grid-column:4/5;
+    grid-row:6/7;
+    width:40px;
+    height:25px;
+    background-color: #90ee90;
+    border-radius:5px;
+    text-align:center;
+    line-height:25px;
+    justify-self:center;
+    align-items:end;
+    margin-top:10px;
+}
+.edit:hover
+{
+    background-color:green;
+}
