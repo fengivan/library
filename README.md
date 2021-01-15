@@ -1,1 +1,1 @@
-# library
+A notepad to write down and save your notes in. Create notes, give them a title and content, and save them locally to your machine. The notes will reappear upon revisiting the page. 
